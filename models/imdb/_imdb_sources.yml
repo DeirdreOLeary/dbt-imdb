@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: imdb
+    description: Raw unzipped data downloaded from the IMDb Non-Commercial Datasets.
+    database: dbw_imdb_01
+    schema: bronze
+    tables:
+      - name: name_basics
+        description: >
+          This source contains details about crew (actors, directors, writers, etc) 
+          such as names, birth and death years, primary professions.
+      - name: title_basics
+        description: >
+          This source contains details about titles (movies, tv shows, shorts, etc) 
+          such as original and alternative titles, runtimes, genres.
+      - name: title_crew
+        description: This source contains the relationships between titles and directors/writers.
+      - name: title_episode
+        description: This source contains the relationshps between tv shows and episodes.
+      - name: title_principals
+        description: This source contains the relationships between titles and crew (actors, editors, etc).
+      - name: title_ratings
+        description: This source contains the average ratings and number of votes for titles.
