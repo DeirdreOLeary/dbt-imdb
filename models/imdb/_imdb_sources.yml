@@ -2,23 +2,160 @@ version: 2
 
 sources:
   - name: imdb
-    description: Raw unzipped data downloaded from the IMDb Non-Commercial Datasets.
+    description: >
+      Raw unzipped data downloaded from the IMDb Non-Commercial Datasets. 
+      Available at https://developer.imdb.com/non-commercial-datasets/
     database: dbw_imdb_01
     schema: bronze
     tables:
       - name: name_basics
         description: >
-          This source contains details about crew (actors, directors, writers, etc) 
+          This source contains details about individuals on the crew (actors, directors, writers, etc) 
           such as names, birth and death years, primary professions.
+        columns:
+          - name: nconst
+            description: Alphanumeric unique identifier of the name/person.
+            tests:
+              - unique
+              - not_null
+          - name: primaryName
+            description: The name by which the person is most often credited.
+            tests:
+              - not_null
+          - name: birthYear
+            description: In YYYY format.
+            tests:
+              - not_null
+          - name: deathYear
+            description: In YYYY format if applicable, else '\N'.
+            tests:
+              - not_null
+          - name: primaryProfession
+            description: The top-3 professions of the person.
+            tests:
+              - not_null
+          - name: knownForTitles
+            description: Titles the person is known for.
+            tests:
+              - not_null
       - name: title_basics
         description: >
           This source contains details about titles (movies, tv shows, shorts, etc) 
           such as original and alternative titles, runtimes, genres.
+        columns:
+          - name: tconst
+            description: Alphanumeric unique identifier of the title. String.
+            tests:
+              - unique
+              - not_null
+          - name: titleType
+            description: The type/format of the title (e.g. movie, short, tvseries, tvepisode, video, etc). String.
+            tests:
+              - not_null
+          - name: primaryTitle
+            description: The more popular title / the title used by the filmmakers on promotional materials at the point of release. String.
+            tests:
+              - not_null
+          - name: originalTitle
+            description: The original title, in the original language. String.
+            tests:
+              - not_null
+          - name: isAdult
+            description: Non-adult title; 1 indicates an adult title. String.
+            tests:
+              - not_null
+          - name: startYear
+            description: The release year of a title. In the case of TV Series, it is the series start year. String.
+            tests:
+              - not_null
+          - name: endYear
+            description: TV Series end year. '\N' for all other title types. String.
+            tests:
+              - not_null
+          - name: runtimeMinutes
+            description: Primary runtime of the title, in minutes. Integer stored as string.
+            tests:
+              - not_null
+          - name: genres
+            description: Includes up to three genres associated with the title. String array.
+            tests:
+              - not_null 
       - name: title_crew
         description: This source contains the relationships between titles and directors/writers.
+        columns:
+          - name: tconst
+            description: Alphanumeric unique identifier of the title. String.
+            tests:
+              - unique
+              - not_null
+          - name: directors
+            description: Director(s) of the given title. String array of nconsts.
+            tests:
+              - not_null
+          - name: writers
+            description: Writer(s) of the given title. String array of nconsts.
+            tests:
+              - not_null
       - name: title_episode
         description: This source contains the relationshps between tv shows and episodes.
+        columns:
+          - name: tconst
+            description: Alphanumeric identifier of episode. String.
+            tests:
+              - unique
+              - not_null
+          - name: parentTconst
+            description: Alphanumeric identifier of the parent TV Series. String.
+            tests:
+              - not_null
+          - name: seasonNumber
+            description: Season number the episode belongs to. Integer stored as string.
+            tests:
+              - not_null
+          - name: episodeNumber
+            description: Episode number of the tconst in the TV series. Integer stored as string.
+            tests:
+              - not_null
       - name: title_principals
         description: This source contains the relationships between titles and crew (actors, editors, etc).
+        columns:
+          - name: tconst
+            description: Alphanumeric unique identifier of the title. String.
+            tests:
+              - not_null
+          - name: ordering
+            description: A number to uniquely identify rows for a given titleId. Integer stored as string.
+            tests:
+              - not_null
+          - name: nconst
+            description: Alphanumeric unique identifier of the name/person. String.
+            tests:
+              - not_null
+          - name: category
+            description: The category of job that person was in. String.
+            tests:
+              - not_null
+          - name: job
+            description: The specific job title if applicable, else '\N'. String.
+            tests:
+              - not_null
+          - name: characters
+            description: The name of the character played if applicable, else '\N'. String.
+            tests:
+              - not_null
       - name: title_ratings
         description: This source contains the average ratings and number of votes for titles.
+        columns:
+          - name: tconst
+            description: Alphanumeric unique identifier of the title. String
+            tests:
+              - unique
+              - not_null
+          - name: averageRating
+            description: Weighted average of all the individual user ratings.
+            tests:
+              - not_null
+          - name: numVotes
+            description: Number of votes the title has received.
+            tests:
+              - not_null
