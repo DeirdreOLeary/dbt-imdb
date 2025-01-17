@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_imdb__name_basics
+    columns:
+      - name: NameKey
+        description: "Alphanumeric unique identifier of the name/person. Original name in source: nconst."
+        tests:
+          - unique
+          - not_null
+      - name: Name
+        description: "The name by which the person is most often credited. Original name in source: primaryName."
+        tests:
+          - not_null
+      - name: BirthYear
+        description: In YYYY format.
+      - name: DeathYear
+        description: In YYYY format if applicable, else NULL.
