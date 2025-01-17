@@ -12,11 +12,11 @@ renamed as (
         primaryName as Name,
         -- Set nulls for the birth & death years, & remove any trailing spaces from non-null years
         case birthYear
-            when '\N' then null
+            when '\\N' then null
             else left(birthYear, 4)
         end as BirthYear,
         case deathYear
-            when '\N' then null
+            when '\\N' then null
             else left(deathYear, 4)
         end as DeathYear
     from source

@@ -9,14 +9,14 @@ renamed as (
     select 
         -- Remove any trailing zeros from the tv series' title key
         left(parentTconst, 10) as TitleKey,
-        -- Set nulls for the season & episode numbers, & convert non-null numbers to int
+        -- Set nulls for the season & episode numbers, & convert non-null numbers to int. Note that an escape character is required for \N
         case seasonNumber
-            when '\N' then null
-            else cast(seasonNumber as int)
+            when '\\N' then null
+            else cast(seasonNumber as smallint)
         end as SeasonNumber,
         case episodeNumber
-            when '\N' then null
-            else cast(episodeNumber as int)
+            when '\\N' then null
+            else cast(episodeNumber as smallint)
         end as EpisodeNumber
     from source
 
