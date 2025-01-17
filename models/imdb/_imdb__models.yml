@@ -4,15 +4,64 @@ models:
   - name: stg_imdb__name_basics
     columns:
       - name: NameKey
-        description: "Alphanumeric unique identifier of the name/person. Original name in source: nconst."
+        description: "Original name in source: nconst."
         tests:
           - unique
           - not_null
       - name: Name
-        description: "The name by which the person is most often credited. Original name in source: primaryName."
+        description: "Original name in source: primaryName."
         tests:
           - not_null
       - name: BirthYear
-        description: In YYYY format.
       - name: DeathYear
-        description: In YYYY format if applicable, else NULL.
+  - name: stg_imdb__title_basics
+    columns:
+      - name: TitleKey
+        description: "Original name in source: tconst."
+        tests:
+          - unique
+          - not_null
+      - name: TitleType
+        tests:
+          - not_null
+      - name: Title
+        tests:
+          - not_null
+      - name: ReleaseOrStartYear
+      - name: EndYear
+      - name: RuntimeInMinutes
+      - name: Genres
+  - name: stg_imdb__title_episode
+    columns:
+      - name: TitleKey
+        description: "Original name in source: tconst."
+        tests:
+          - unique
+          - not_null
+      - name: ParentTitleKey
+      - name: SeasonNumber
+      - name: EpisodeNumber
+  - name: stg_imdb__title_principals
+    columns:
+      - name: TitleKey
+        tests:
+          - not_null
+      - name: NameKey
+        tests:
+          - not_null
+      - name: JobCategory
+        tests:
+          - not_null
+      - name: Character
+  - name: stg_imdb__title_ratings
+    columns:
+      - name: TitleKey
+        tests:
+          - unique
+          - not_null
+      - name: AverageRating
+        tests:
+          - not_null
+      - name: NumberOfVotes
+        tests:
+          - not_null
