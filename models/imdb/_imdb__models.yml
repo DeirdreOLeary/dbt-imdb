@@ -24,12 +24,21 @@ models:
       - name: TitleType
         tests:
           - not_null
+          - accepted_values:
+              values: ['titleType', 'movie', 'short', 'tvEpisode', 'tvMiniSeries', 'tvMovie', 'tvPilot', 'tvSeries', 'tvShort', 'tvSpecial', 'video', 'videoGame']
       - name: Title
         tests:
           - not_null
+      - name: IsAdultTitle
+        description: "Original name in source: isAdult. (Boolean)"
+        tests:
+          - accepted_values:
+              values: [true, false]
       - name: ReleaseOrStartYear
+        description: "Original name in source: startYear."
       - name: EndYear
       - name: RuntimeInMinutes
+        description: "Original name in source: runtimeMinutes. (Integer)"
       - name: Genres
   - name: stg_imdb__title_episode
     columns:
@@ -39,29 +48,42 @@ models:
           - unique
           - not_null
       - name: ParentTitleKey
+        description: "Original name in source: parentTconst."
+        tests:
+          - not_null
       - name: SeasonNumber
+        description: "Datatype change: (Smallint)"
       - name: EpisodeNumber
+        description: "Datatype change: (Smallint)"
   - name: stg_imdb__title_principals
     columns:
       - name: TitleKey
+        description: "Original name in source: tconst."
         tests:
           - not_null
       - name: NameKey
+        description: "Original name in source: nconst."
         tests:
           - not_null
       - name: JobCategory
+        description: "Original name in source: category."
         tests:
           - not_null
+          - accepted_values:
+              values: ['actor', 'actress', 'archive_footage', 'archive_sound', 'casting_director', 'cinematographer', 'composer', 'director', 'editor', 'producer', 'production_designer', 'self', 'writer']
       - name: Character
   - name: stg_imdb__title_ratings
     columns:
       - name: TitleKey
+        description: "Original name in source: tconst."
         tests:
           - unique
           - not_null
       - name: AverageRating
+        description: "Datatype change: (Decimal)"
         tests:
           - not_null
       - name: NumberOfVotes
+        description: "Datatype change: (Integer)"
         tests:
           - not_null
