@@ -54,7 +54,7 @@ models:
       - name: SeasonNumber
         description: "Datatype change: (Smallint)"
       - name: EpisodeNumber
-        description: "Datatype change: (Smallint)"
+        description: "Datatype change: (Int)"
   - name: stg_imdb__title_principals
     columns:
       - name: TitleKey

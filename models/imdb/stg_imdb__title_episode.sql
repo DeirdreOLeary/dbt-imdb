@@ -17,7 +17,7 @@ renamed as (
         end as SeasonNumber,
         case episodeNumber
             when '\\N' then null
-            else cast(episodeNumber as smallint)
+            else cast(episodeNumber as int)
         end as EpisodeNumber
     from source
 
