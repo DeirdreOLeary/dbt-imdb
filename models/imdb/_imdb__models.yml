@@ -71,7 +71,7 @@ models:
           - not_null
           - accepted_values:
               values: ['actor', 'actress', 'archive_footage', 'archive_sound', 'casting_director', 'cinematographer', 'composer', 'director', 'editor', 'producer', 'production_designer', 'self', 'writer']
-      - name: Character
+      - name: Characters
   - name: stg_imdb__title_ratings
     columns:
       - name: TitleKey
@@ -87,3 +87,114 @@ models:
         description: "Datatype change: (Integer)"
         tests:
           - not_null
+  - name: int_actors_joined
+    description: Inner join of stg_imdb__name_basics and stg_imdb__title_principals, filtered to 'actor', 'actress'.
+    columns:
+      - name: NameKey
+        description: "From staging model: stg_imdb__name_basics"
+        tests:
+          - not_null
+      - name: TitleKey
+        description: "From staging model: stg_imdb__title_principals"
+        tests:
+          - not_null
+      - name: Name
+        description: "From staging model: stg_imdb__name_basics"
+        tests:
+          - not_null
+      - name: Characters
+        description: "From staging model: stg_imdb__title_principals"
+      - name: BirthYear
+        description: "From staging model: stg_imdb__name_basics"
+      - name: DeathYear
+        description: "From staging model: stg_imdb__name_basics"
+  - name: int_directors_joined
+    description: Inner join of stg_imdb__name_basics and stg_imdb__title_principals, filtered to 'director'.
+    columns:
+      - name: NameKey
+        description: "From staging model: stg_imdb__name_basics"
+        tests:
+          - not_null
+      - name: TitleKey
+        description: "From staging model: stg_imdb__title_principals"
+        tests:
+          - not_null
+      - name: Name
+        description: "From staging model: stg_imdb__name_basics"
+        tests:
+          - not_null
+      - name: BirthYear
+        description: "From staging model: stg_imdb__name_basics"
+      - name: DeathYear
+        description: "From staging model: stg_imdb__name_basics"
+  - name: int_movies_filtered
+    description: stg_imdb__title_basics, filtered to 'movie', non-adult titles only.
+    columns:
+      - name: TitleKey
+        tests:
+          - unique
+          - not_null
+      - name: Title
+        tests:
+          - not_null
+      - name: ReleaseYear
+        description: "Original name in staging: ReleaseOrStartYear."
+      - name: RuntimeInMinutes
+      - name: Genres
+  - name: int_ratings_joined
+    description: Inner join of stg_imdb__title_ratings and the union of int_movies_filtered and int_tvseries_joined.
+    columns:
+      - name: TitleKey
+        description: "From staging models: int_movies_filtered and int_tvseries_joined"
+        tests:
+          - unique
+          - not_null
+      - name: AverageRating
+        description: "From staging model: stg_imdb__title_ratings"
+        tests:
+          - not_null
+      - name: NumberOfVotes
+        description: "From staging model: stg_imdb__title_ratings"
+        tests:
+          - not_null
+  - name: int_tvseries_joined
+    description: Inner join of stg_imdb__title_basics and stg_imdb__title_episode, filtered to 'tvSeries', non-adult titles only.
+    columns:
+      - name: TitleKey
+        description: "From staging model: stg_imdb__title_episode"
+        tests:
+          - unique
+          - not_null
+      - name: Title
+        description: "From staging model: stg_imdb__title_episode"
+        tests:
+          - not_null
+      - name: StartYear
+        description: "From staging model: stg_imdb__title_episode Original name in staging: ReleaseOrStartYear."
+      - name: EndYear
+        description: "From staging model: stg_imdb__title_episode"
+      - name: NumberOfSeasons
+        description: "From staging model: stg_imdb__title_episode"
+      - name: NumberOfEpisodes
+        description: "From staging model: stg_imdb__title_episode"
+      - name: Genres
+        description: "From staging model: stg_imdb__title_episode"
+  - name: int_writers_joined
+    description: Inner join of stg_imdb__name_basics and stg_imdb__title_principals, filtered to 'writer'.
+    columns:
+      - name: NameKey
+        description: "From staging model: stg_imdb__name_basics"
+        tests:
+          - not_null
+      - name: TitleKey
+        description: "From staging model: stg_imdb__title_principals"
+        tests:
+          - not_null
+      - name: Name
+        description: "From staging model: stg_imdb__name_basics"
+        tests:
+          - not_null
+      - name: BirthYear
+        description: "From staging model: stg_imdb__name_basics"
+      - name: DeathYear
+        description: "From staging model: stg_imdb__name_basics"
