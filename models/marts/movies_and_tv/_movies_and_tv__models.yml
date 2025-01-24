@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: dim_movies
+  - name: dim_tv
+  - name: fact_ratings

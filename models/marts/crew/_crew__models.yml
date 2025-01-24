@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: dim_actors
+  - name: dim_directors
+  - name: dim_writers
